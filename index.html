@@ -1,62 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HXTEND - Feedback</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HXTEND - Feedback Doctor</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="center-wrapper">
     <div class="container">
-
       <div class="logo-container">
-        <img src="logo-HXTEND.png" alt="Logo HXTEND" class="logo" />
+        <img src="logo-HXTEND.png" alt="Logo HXTEND" class="logo">
       </div>
-
       <h1>HXTEND - Feedback</h1>
 
       <div class="form">
-        <label for="doctor-select">Seleccionar doctor:</label>
-        <select id="doctor-select"></select>
-
         <label for="procedimiento">Procedimiento realizado:</label>
-        <input type="text" id="procedimiento" />
+        <input type="text" id="procedimiento">
 
         <label for="comentario">Feedback:</label>
         <textarea id="comentario"></textarea>
 
         <div class="buttons">
-          <button onclick="guardarFeedback()">Guardar Feedback</button>
-          <button onclick="descargarFeedbacks()">Descargar TXT</button>
-          <button onclick="toggleHistorial()">Ver Feedbacks</button>
+          <button onclick="guardarFeedback()">Enviar Feedback</button>
         </div>
-      </div>
-
-      <div class="form" style="margin-top: 30px;">
-        <label for="nuevo-doctor">Registrar nuevo doctor:</label>
-        <input type="text" id="nuevo-doctor" />
-        <button onclick="registrarDoctor()">Agregar Doctor</button>
-      </div>
-
-      <div id="historial" class="feedbacks" style="display: none;">
-        <div class="feedback-header">
-          <h2>Feedbacks</h2>
-          <button onclick="toggleHistorial()">✖</button>
-        </div>
-        
-        <div style="margin-bottom: 15px;">
-          <label for="filtro-doctor">Filtrar por doctor:</label>
-          <select id="filtro-doctor" onchange="mostrarFeedbacks()"></select>
-          <button onclick="descargarFiltrados()">Descargar filtrados</button>
-        </div>
-        
-        <div id="listaFeedbacks"></div>
-
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script_doctor.js"></script>
 </body>
 </html>
