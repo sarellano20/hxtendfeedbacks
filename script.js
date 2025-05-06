@@ -33,8 +33,33 @@ function mostrarFeedbacks() {
 
   const feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
 
-  feedbacks.reverse().forEach(fb => {
+  const filtroDoctor = document.getElementById("filtro-doctor");
+  const doctorFiltrado = filtroDoctor ? filtroDoctor.value : "";
+
+  // Actualizar select de filtro (solo si existe)
+  if (filtroDoctor && filtroDoctor.options.length === 0) {
+    const doctores = [...new Set(feedbacks.map(fb => fb.doctor))];
+    filtroDoctor.innerHTML = `<option value="">-- Todos --</option>`;
+    doctores.forEach(doc => {
+      const option = document.createElement("option");
+      option.value = doc;
+      option.textContent = doc;
+      filtroDoctor.appendChild(option);
+    });
+  }
+
+  const filtrados = doctorFiltrado
+    ? feedbacks.filter(fb => fb.doctor === doctorFiltrado)
+    : feedbacks;
+
+  if (filtrados.length === 0) {
+    contenedor.innerHTML = `<p>No hay feedbacks disponibles para este doctor.</p>`;
+    return;
+  }
+
+  filtrados.reverse().forEach(fb => {
     const div = document.createElement("div");
+    div.className = "feedback-item";
     div.innerHTML = `<strong>${fb.fecha}</strong><br/>
     <u>Doctor:</u> ${fb.doctor}<br/>
     <u>Procedimiento:</u> ${fb.procedimiento}<br/>
