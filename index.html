@@ -44,7 +44,14 @@
           <h2>Feedbacks</h2>
           <button onclick="toggleHistorial()">✖</button>
         </div>
+        
+        <div style="margin-bottom: 15px;">
+          <label for="filtro-doctor">Filtrar por doctor:</label>
+          <select id="filtro-doctor" onchange="mostrarFeedbacks()"></select>
+        </div>
+        
         <div id="listaFeedbacks"></div>
+
       </div>
     </div>
   </div>
