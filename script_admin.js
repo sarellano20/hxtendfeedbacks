@@ -1,0 +1,89 @@
+document.addEventListener("DOMContentLoaded", () => {
+  cargarDoctores();
+  mostrarFeedbacks();
+});
+
+function registrarDoctor() {
+  const nuevoDoctor = document.getElementById("nuevo-doctor").value.trim();
+  if (!nuevoDoctor) return alert("Ingrese un nombre válido.");
+
+  let doctores = JSON.parse(localStorage.getItem("doctores")) || [];
+  if (doctores.includes(nuevoDoctor)) {
+    alert("Este doctor ya está registrado.");
+    return;
+  }
+
+  doctores.push(nuevoDoctor);
+  localStorage.setItem("doctores", JSON.stringify(doctores));
+  document.getElementById("nuevo-doctor").value = "";
+  cargarDoctores();
+}
+
+function cargarDoctores() {
+  const select = document.getElementById("filtro-doctor");
+  select.innerHTML = `<option value="">-- Todos --</option>`;
+  const doctores = JSON.parse(localStorage.getItem("doctores")) || [];
+  doctores.forEach(doc => {
+    const option = document.createElement("option");
+    option.value = doc;
+    option.textContent = doc;
+    select.appendChild(option);
+  });
+}
+
+function mostrarFeedbacks() {
+  const contenedor = document.getElementById("listaFeedbacks");
+  contenedor.innerHTML = "";
+
+  const feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
+  const filtro = document.getElementById("filtro-doctor").value;
+
+  const filtrados = filtro ? feedbacks.filter(fb => fb.doctor === filtro) : feedbacks;
+
+  if (filtrados.length === 0) {
+    contenedor.innerHTML = "<p>No hay feedbacks disponibles.</p>";
+    return;
+  }
+
+  filtrados.reverse().forEach(fb => {
+    const div = document.createElement("div");
+    div.innerHTML = `<strong>${fb.fecha}</strong><br>
+      <u>Doctor:</u> ${fb.doctor}<br>
+      <u>Procedimiento:</u> ${fb.procedimiento}<br>
+      <u>Feedback:</u> ${fb.comentario}`;
+    contenedor.appendChild(div);
+  });
+}
+
+function descargarFeedbacks() {
+  descargar(false);
+}
+
+function descargarFiltrados() {
+  descargar(true);
+}
+
+function descargar(filtrado) {
+  const feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
+  const filtro = document.getElementById("filtro-doctor").value;
+  const filtrados = filtrado && filtro ? feedbacks.filter(fb => fb.doctor === filtro) : feedbacks;
+
+  if (filtrados.length === 0) {
+    alert("No hay feedbacks disponibles.");
+    return;
+  }
+
+  let contenido = `FEEDBACKS HXTEND ${filtrado && filtro ? `- ${filtro}` : ''}\n--------------------\n`;
+  filtrados.forEach((fb, i) => {
+    contenido += `#${i + 1}\nFecha: ${fb.fecha}\nDoctor: ${fb.doctor}\nProcedimiento: ${fb.procedimiento}\nFeedback: ${fb.comentario}\n\n`;
+  });
+
+  const blob = new Blob([contenido], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  const nombre = filtrado && filtro ? `feedbacks_${filtro.replace(/\s+/g, "_")}.txt` : "feedbacks_hxtend.txt";
+  a.download = nombre;
+  a.click();
+  URL.revokeObjectURL(url);
+}
