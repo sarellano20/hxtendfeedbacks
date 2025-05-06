@@ -96,19 +96,6 @@ button:hover {
   white-space: pre-line;
   box-shadow: 0 0 10px rgba(0,255,255,0.1);
 }
-.feedbacks div button {
-  margin-top: 8px;
-  padding: 6px 12px;
-  background-color: #ff4f4f;
-  border: none;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.feedbacks div button:hover {
-  background-color: #e03e3e;
-}
 
 .alerta {
   position: fixed;
@@ -131,35 +118,4 @@ button:hover {
   10% { opacity: 1; bottom: 30px; }
   90% { opacity: 1; bottom: 30px; }
   100% { opacity: 0; bottom: 10px; }
-}
-
-.lista-doctores {
-  list-style: none;
-  padding: 0;
-  margin-top: 15px;
-}
-
-.lista-doctores li {
-  background-color: #2a3b4d;
-  margin-bottom: 8px;
-  padding: 10px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #fff;
-}
-
-.lista-doctores button {
-  background-color: #00fff7;
-  color: #000;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.lista-doctores button:hover {
-  background-color: #00e0db;
 }
