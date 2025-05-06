@@ -143,12 +143,13 @@ function agregarDoctor() {
   }
 
   fetch(SHEET_SCRIPT_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ nuevoDoctor })
-  })
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ nuevoDoctor })
+})
   .then(() => {
     doctores.push(nuevoDoctor);
     cargarDoctores();
