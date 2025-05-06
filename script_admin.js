@@ -1,11 +1,13 @@
-const SHEET_ID = "AKfycbwXbmYpSTIThQ0W1mubqKCSsD08NblLwa-pWyudYTkEPpUpPbl7TUVXlqTT92C3nXg98g";
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+const SHEET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwXbmYpSTIThQ0W1mubqKCSsD08NblLwa-pWyudYTkEPpUpPbl7TUVXlqTT92C3nXg98g/exec";
 
 let todosFeedbacks = [];
 let doctores = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const res = await fetch(SHEET_URL);
+  // Obtener feedbacks desde Google Sheets (hoja Feedbacks)
+  const sheetId = "AKfycbwXbmYpSTIThQ0W1mubqKCSsD08NblLwa-pWyudYTkEPpUpPbl7TUVXlqTT92C3nXg98g";
+  const SHEET_FEEDBACK_URL = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+  const res = await fetch(SHEET_FEEDBACK_URL);
   const text = await res.text();
   const json = JSON.parse(text.substring(47).slice(0, -2));
   const rows = json.table.rows;
@@ -17,12 +19,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     comentario: row.c[3]?.v || ""
   }));
 
-  doctores = [...new Set(todosFeedbacks.map(fb => fb.doctor))];
-
+  await cargarDoctoresDesdeSheet();
   cargarDoctores();
   mostrarFeedbacks(todosFeedbacks);
   mostrarListaDoctores();
 });
+
+async function cargarDoctoresDesdeSheet() {
+  try {
+    const res = await fetch(SHEET_SCRIPT_URL);
+    const datos = await res.json();
+    doctores = datos.doctores || [];
+  } catch (e) {
+    alert("Error al cargar la lista de doctores");
+  }
+}
 
 function validarLogin() {
   const usuario = document.getElementById("usuario").value.trim();
@@ -119,6 +130,34 @@ function copiarLink(encoded) {
   const enlace = `${window.location.origin}/index.html?doctor=${encoded}`;
   navigator.clipboard.writeText(enlace).then(() => {
     mostrarAlerta("✅ Enlace copiado al portapapeles.");
+  });
+}
+
+function agregarDoctor() {
+  const input = document.getElementById("nuevo-doctor");
+  const nuevoDoctor = input.value.trim();
+
+  if (!nuevoDoctor) {
+    alert("Por favor, ingrese un nombre válido.");
+    return;
+  }
+
+  fetch(SHEET_SCRIPT_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ nuevoDoctor })
+  })
+  .then(() => {
+    doctores.push(nuevoDoctor);
+    cargarDoctores();
+    mostrarListaDoctores();
+    input.value = "";
+    mostrarAlerta("✅ Doctor agregado correctamente.");
+  })
+  .catch(() => {
+    alert("❌ Error al agregar el doctor.");
   });
 }
 
