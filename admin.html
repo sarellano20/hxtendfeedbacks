@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HXTEND - Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="center-wrapper">
+    <div class="container">
+      <div class="logo-container">
+        <img src="logo-HXTEND.png" alt="Logo HXTEND" class="logo">
+      </div>
+      <h1>Panel Admin - HXTEND</h1>
+
+      <div class="form">
+        <label for="nuevo-doctor">Registrar nuevo doctor:</label>
+        <input type="text" id="nuevo-doctor">
+        <button onclick="registrarDoctor()">Agregar Doctor</button>
+      </div>
+
+      <div class="form" style="margin-top: 30px;">
+        <label for="filtro-doctor">Filtrar por doctor:</label>
+        <select id="filtro-doctor" onchange="mostrarFeedbacks()"></select>
+        <button onclick="descargarFiltrados()">Descargar filtrados</button>
+        <button onclick="descargarFeedbacks()">Descargar todos</button>
+      </div>
+
+      <div class="feedbacks" id="historial">
+        <h2>Feedbacks</h2>
+        <div id="listaFeedbacks"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script_admin.js"></script>
+</body>
+</html>
