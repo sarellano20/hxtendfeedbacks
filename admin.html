@@ -10,6 +10,7 @@
   <div class="center-wrapper">
     <div class="container">
 
+      <!-- LOGIN -->
       <div id="login-section">
         <div class="logo-container">
           <img src="logo-HXTEND.png" alt="Logo HXTEND" class="logo">
@@ -18,16 +19,15 @@
         <div class="form">
           <label for="usuario">Usuario:</label>
           <input type="text" id="usuario" />
-
           <label for="clave">Contraseña:</label>
           <input type="password" id="clave" />
-
           <div class="buttons">
             <button onclick="validarLogin()">Ingresar</button>
           </div>
         </div>
       </div>
 
+      <!-- PANEL ADMIN -->
       <div id="admin-panel" style="display: none;">
         <div class="logo-container">
           <img src="logo-HXTEND.png" alt="Logo HXTEND" class="logo">
@@ -35,19 +35,9 @@
         <h1>Panel Admin - HXTEND</h1>
 
         <div class="form">
-          <label for="nuevo-doctor">Registrar nuevo doctor:</label>
-          <input type="text" id="nuevo-doctor">
-          <button onclick="registrarDoctor()">Agregar Doctor</button>
-          <h2 style="margin-top: 30px;">Doctores registrados</h2>
-          <ul id="listaDoctores" class="lista-doctores"></ul>
-
-        </div>
-
-        <div class="form" style="margin-top: 30px;">
           <label for="filtro-doctor">Filtrar por doctor:</label>
-          <select id="filtro-doctor" onchange="mostrarFeedbacks()"></select>
-          <button onclick="descargarFiltrados()">Descargar filtrados</button>
-          <button onclick="descargarFeedbacks()">Descargar todos</button>
+          <select id="filtro-doctor" onchange="filtrarFeedbacks()"></select>
+          <button onclick="descargarFeedbacks()">Descargar feedbacks</button>
         </div>
 
         <div class="feedbacks" id="historial">
