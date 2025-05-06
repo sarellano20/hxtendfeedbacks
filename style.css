@@ -96,3 +96,26 @@ button:hover {
   white-space: pre-line;
   box-shadow: 0 0 10px rgba(0,255,255,0.1);
 }
+
+.alerta {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #00fff7;
+  color: #000;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  opacity: 0;
+  animation: fadeinout 3s ease-in-out;
+  z-index: 9999;
+}
+
+@keyframes fadeinout {
+  0% { opacity: 0; bottom: 10px; }
+  10% { opacity: 1; bottom: 30px; }
+  90% { opacity: 1; bottom: 30px; }
+  100% { opacity: 0; bottom: 10px; }
+}
