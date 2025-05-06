@@ -1,7 +1,5 @@
-/* Fondo y estructura general */
 body {
   margin: 0;
-  padding: 0;
   font-family: "Segoe UI", sans-serif;
   background: radial-gradient(circle, #0f2027, #203a43, #2c5364);
   color: white;
@@ -90,26 +88,7 @@ button:hover {
   background-color: #00e0db;
 }
 
-.feedbacks {
-  margin-top: 30px;
-}
-
-.feedback-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.feedback-header button {
-  background-color: red;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.feedbacks div.feedback-item {
+.feedbacks div {
   background-color: #293847;
   padding: 15px;
   margin-top: 10px;
