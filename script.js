@@ -90,3 +90,37 @@ function descargarFeedbacks() {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+function descargarFiltrados() {
+  const feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
+
+  const filtroDoctor = document.getElementById("filtro-doctor");
+  const doctorFiltrado = filtroDoctor ? filtroDoctor.value : "";
+
+  const filtrados = doctorFiltrado
+    ? feedbacks.filter(fb => fb.doctor === doctorFiltrado)
+    : feedbacks;
+
+  if (filtrados.length === 0) {
+    alert("No hay feedbacks disponibles para este filtro.");
+    return;
+  }
+
+  let contenido = `FEEDBACKS HXTEND ${doctorFiltrado ? `- ${doctorFiltrado}` : ''}\n--------------------\n`;
+  filtrados.forEach((fb, index) => {
+    contenido += `#${index + 1}\nFecha: ${fb.fecha}\nDoctor: ${fb.doctor}\nProcedimiento: ${fb.procedimiento}\nFeedback: ${fb.comentario}\n\n`;
+  });
+
+  const blob = new Blob([contenido], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  const nombreArchivo = doctorFiltrado
+    ? `feedbacks_${doctorFiltrado.replace(/\s+/g, "_")}.txt`
+    : "feedbacks_hxtend.txt";
+  a.download = nombreArchivo;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
