@@ -1,8 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
-  cargarDoctores();
-  mostrarFeedbacks();
-});
-
+// ===============================
+// LOGIN
+// ===============================
 function validarLogin() {
   const usuario = document.getElementById("usuario").value.trim();
   const clave = document.getElementById("clave").value.trim();
@@ -12,11 +10,15 @@ function validarLogin() {
     document.getElementById("admin-panel").style.display = "block";
     cargarDoctores();
     mostrarFeedbacks();
+    mostrarListaDoctores();
   } else {
     alert("Usuario o contraseña incorrectos.");
   }
 }
 
+// ===============================
+// DOCTORES
+// ===============================
 function registrarDoctor() {
   const nuevoDoctor = document.getElementById("nuevo-doctor").value.trim();
   if (!nuevoDoctor) return alert("Ingrese un nombre válido.");
@@ -31,10 +33,14 @@ function registrarDoctor() {
   localStorage.setItem("doctores", JSON.stringify(doctores));
   document.getElementById("nuevo-doctor").value = "";
   cargarDoctores();
+  mostrarListaDoctores();
+  mostrarAlerta("✅ Doctor registrado correctamente.");
 }
 
 function cargarDoctores() {
   const select = document.getElementById("filtro-doctor");
+  if (!select) return;
+
   select.innerHTML = `<option value="">-- Todos --</option>`;
   const doctores = JSON.parse(localStorage.getItem("doctores")) || [];
   doctores.forEach(doc => {
@@ -45,12 +51,37 @@ function cargarDoctores() {
   });
 }
 
+function mostrarListaDoctores() {
+  const contenedor = document.getElementById("listaDoctores");
+  if (!contenedor) return;
+
+  const doctores = JSON.parse(localStorage.getItem("doctores")) || [];
+  contenedor.innerHTML = "";
+
+  doctores.forEach(doc => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <span>${doc}</span>
+      <button onclick="abrirDoctor('${encodeURIComponent(doc)}')">Ver panel</button>
+    `;
+    contenedor.appendChild(li);
+  });
+}
+
+function abrirDoctor(nombreCodificado) {
+  const url = `index.html?doctor=${nombreCodificado}`;
+  window.open(url, "_blank");
+}
+
+// ===============================
+// FEEDBACKS
+// ===============================
 function mostrarFeedbacks() {
   const contenedor = document.getElementById("listaFeedbacks");
   contenedor.innerHTML = "";
 
   const feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
-  const filtro = document.getElementById("filtro-doctor").value;
+  const filtro = document.getElementById("filtro-doctor")?.value;
 
   const filtrados = filtro ? feedbacks.filter(fb => fb.doctor === filtro) : feedbacks;
 
@@ -100,8 +131,13 @@ function descargar(filtrado) {
   a.download = nombre;
   a.click();
   URL.revokeObjectURL(url);
+
+  mostrarAlerta("✅ Archivo TXT descargado.");
 }
 
+// ===============================
+// ALERTAS ANIMADAS
+// ===============================
 function mostrarAlerta(mensaje) {
   const alerta = document.createElement("div");
   alerta.className = "alerta";
@@ -111,4 +147,3 @@ function mostrarAlerta(mensaje) {
     alerta.remove();
   }, 3000);
 }
-
