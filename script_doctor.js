@@ -1,4 +1,4 @@
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbwXbmYpSTIThQ0W1mubqKCSsD08NblLwa-pWyudYTkEPpUpPbl7TUVXlqTT92C3nXg98g/exec";
+const SHEET_FEEDBACK_URL = "https://script.google.com/macros/s/AKfycbwXbmYpSTIThQ0W1mubqKCSsD08NblLwa-pWyudYTkEPpUpPbl7TUVXlqTT92C3nXg98g/exec";
 
 let doctorActivo = "";
 
@@ -30,17 +30,19 @@ function guardarFeedback() {
     comentario: comentario
   };
 
-  fetch(SHEET_URL, {
+  fetch(SHEET_FEEDBACK_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(data)
-  }).then(() => {
+  })
+  .then(() => {
     mostrarAlerta("✅ Feedback enviado exitosamente.");
     document.getElementById("procedimiento").value = "";
     document.getElementById("comentario").value = "";
-  }).catch(() => {
+  })
+  .catch(() => {
     alert("❌ Error al enviar el feedback. Verifique su conexión o intente más tarde.");
   });
 }
