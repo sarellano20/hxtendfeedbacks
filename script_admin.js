@@ -1,6 +1,29 @@
-// ===============================
-// LOGIN
-// ===============================
+const SHEET_ID = "AKfycbwXbmYpSTIThQ0W1mubqKCSsD08NblLwa-pWyudYTkEPpUpPbl7TUVXlqTT92C3nXg98g";
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+
+let todosFeedbacks = [];
+let doctores = [];
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const res = await fetch(SHEET_URL);
+  const text = await res.text();
+  const json = JSON.parse(text.substring(47).slice(0, -2));
+  const rows = json.table.rows;
+
+  todosFeedbacks = rows.map(row => ({
+    fecha: row.c[0]?.f || "",
+    doctor: row.c[1]?.v || "",
+    procedimiento: row.c[2]?.v || "",
+    comentario: row.c[3]?.v || ""
+  }));
+
+  doctores = [...new Set(todosFeedbacks.map(fb => fb.doctor))];
+
+  cargarDoctores();
+  mostrarFeedbacks(todosFeedbacks);
+  mostrarListaDoctores();
+});
+
 function validarLogin() {
   const usuario = document.getElementById("usuario").value.trim();
   const clave = document.getElementById("clave").value.trim();
@@ -8,41 +31,14 @@ function validarLogin() {
   if (usuario === "admin" && clave === "hxtend25") {
     document.getElementById("login-section").style.display = "none";
     document.getElementById("admin-panel").style.display = "block";
-    cargarDoctores();
-    mostrarFeedbacks();
-    mostrarListaDoctores();
   } else {
     alert("Usuario o contraseña incorrectos.");
   }
 }
 
-// ===============================
-// DOCTORES
-// ===============================
-function registrarDoctor() {
-  const nuevoDoctor = document.getElementById("nuevo-doctor").value.trim();
-  if (!nuevoDoctor) return alert("Ingrese un nombre válido.");
-
-  let doctores = JSON.parse(localStorage.getItem("doctores")) || [];
-  if (doctores.includes(nuevoDoctor)) {
-    alert("Este doctor ya está registrado.");
-    return;
-  }
-
-  doctores.push(nuevoDoctor);
-  localStorage.setItem("doctores", JSON.stringify(doctores));
-  document.getElementById("nuevo-doctor").value = "";
-  cargarDoctores();
-  mostrarListaDoctores();
-  mostrarAlerta("✅ Doctor registrado correctamente.");
-}
-
 function cargarDoctores() {
   const select = document.getElementById("filtro-doctor");
-  if (!select) return;
-
-  select.innerHTML = `<option value="">-- Todos --</option>`;
-  const doctores = JSON.parse(localStorage.getItem("doctores")) || [];
+  select.innerHTML = '<option value="">-- Todos --</option>';
   doctores.forEach(doc => {
     const option = document.createElement("option");
     option.value = doc;
@@ -51,77 +47,43 @@ function cargarDoctores() {
   });
 }
 
-function mostrarListaDoctores() {
-  const contenedor = document.getElementById("listaDoctores");
-  if (!contenedor) return;
-
-  const doctores = JSON.parse(localStorage.getItem("doctores")) || [];
-  contenedor.innerHTML = "";
-
-  doctores.forEach(doc => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <span>${doc}</span>
-      <button onclick="abrirDoctor('${encodeURIComponent(doc)}')">Ver panel</button>
-    `;
-    contenedor.appendChild(li);
-  });
-}
-
-function abrirDoctor(nombreCodificado) {
-  const url = `index.html?doctor=${nombreCodificado}`;
-  window.open(url, "_blank");
-}
-
-// ===============================
-// FEEDBACKS
-// ===============================
-function mostrarFeedbacks() {
+function mostrarFeedbacks(lista) {
   const contenedor = document.getElementById("listaFeedbacks");
   contenedor.innerHTML = "";
 
-  const feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
-  const filtro = document.getElementById("filtro-doctor")?.value;
-
-  const filtrados = filtro ? feedbacks.filter(fb => fb.doctor === filtro) : feedbacks;
-
-  if (filtrados.length === 0) {
+  if (lista.length === 0) {
     contenedor.innerHTML = "<p>No hay feedbacks disponibles.</p>";
     return;
   }
 
-  filtrados.reverse().forEach((fb, index) => {
+  lista.forEach(fb => {
     const div = document.createElement("div");
+    div.className = "feedback-item";
     div.innerHTML = `<strong>${fb.fecha}</strong><br>
       <u>Doctor:</u> ${fb.doctor}<br>
       <u>Procedimiento:</u> ${fb.procedimiento}<br>
-      <u>Feedback:</u> ${fb.comentario}<br>
-      <button onclick="eliminarFeedback('${fb.fecha}', '${fb.doctor}', '${fb.procedimiento.replace(/'/g, "\\'")}')">Eliminar</button>`;
-    div.classList.add("feedback-item");
+      <u>Feedback:</u> ${fb.comentario}`;
     contenedor.appendChild(div);
   });
 }
 
-function descargarFeedbacks() {
-  descargar(false);
-}
-
-function descargarFiltrados() {
-  descargar(true);
-}
-
-function descargar(filtrado) {
-  const feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
+function filtrarFeedbacks() {
   const filtro = document.getElementById("filtro-doctor").value;
-  const filtrados = filtrado && filtro ? feedbacks.filter(fb => fb.doctor === filtro) : feedbacks;
+  const filtrados = filtro ? todosFeedbacks.filter(fb => fb.doctor === filtro) : todosFeedbacks;
+  mostrarFeedbacks(filtrados);
+}
 
-  if (filtrados.length === 0) {
-    alert("No hay feedbacks disponibles.");
+function descargarFeedbacks() {
+  const filtro = document.getElementById("filtro-doctor").value;
+  const lista = filtro ? todosFeedbacks.filter(fb => fb.doctor === filtro) : todosFeedbacks;
+
+  if (lista.length === 0) {
+    alert("No hay feedbacks para descargar.");
     return;
   }
 
-  let contenido = `FEEDBACKS HXTEND ${filtrado && filtro ? `- ${filtro}` : ''}\n--------------------\n`;
-  filtrados.forEach((fb, i) => {
+  let contenido = `FEEDBACKS HXTEND ${filtro ? `- ${filtro}` : ''}\n------------------------------\n`;
+  lista.forEach((fb, i) => {
     contenido += `#${i + 1}\nFecha: ${fb.fecha}\nDoctor: ${fb.doctor}\nProcedimiento: ${fb.procedimiento}\nFeedback: ${fb.comentario}\n\n`;
   });
 
@@ -129,17 +91,37 @@ function descargar(filtrado) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  const nombre = filtrado && filtro ? `feedbacks_${filtro.replace(/\s+/g, "_")}.txt` : "feedbacks_hxtend.txt";
-  a.download = nombre;
+  a.download = `feedbacks_${filtro || 'todos'}.txt`;
   a.click();
   URL.revokeObjectURL(url);
-
-  mostrarAlerta("✅ Archivo TXT descargado.");
 }
 
-// ===============================
-// ALERTAS ANIMADAS
-// ===============================
+function mostrarListaDoctores() {
+  const contenedor = document.getElementById("listaDoctores");
+  if (!contenedor) return;
+  contenedor.innerHTML = "";
+
+  doctores.forEach(doc => {
+    const li = document.createElement("li");
+    const encoded = encodeURIComponent(doc);
+    li.innerHTML = `
+      <span>${doc}</span>
+      <div>
+        <button onclick="window.open('index.html?doctor=${encoded}', '_blank')">Ver panel</button>
+        <button onclick="copiarLink('${encoded}')">Copiar enlace</button>
+      </div>
+    `;
+    contenedor.appendChild(li);
+  });
+}
+
+function copiarLink(encoded) {
+  const enlace = `${window.location.origin}/index.html?doctor=${encoded}`;
+  navigator.clipboard.writeText(enlace).then(() => {
+    mostrarAlerta("✅ Enlace copiado al portapapeles.");
+  });
+}
+
 function mostrarAlerta(mensaje) {
   const alerta = document.createElement("div");
   alerta.className = "alerta";
@@ -149,24 +131,3 @@ function mostrarAlerta(mensaje) {
     alerta.remove();
   }, 3000);
 }
-
-function eliminarFeedback(fecha, doctor, procedimiento) {
-  let feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
-
-  const index = feedbacks.findIndex(fb =>
-    fb.fecha === fecha &&
-    fb.doctor === doctor &&
-    fb.procedimiento === procedimiento
-  );
-
-  if (index !== -1) {
-    if (!confirm("¿Desea eliminar este feedback?")) return;
-    feedbacks.splice(index, 1);
-    localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
-    mostrarFeedbacks();
-    mostrarAlerta("🗑️ Feedback eliminado.");
-  } else {
-    alert("No se pudo encontrar este feedback.");
-  }
-}
-
