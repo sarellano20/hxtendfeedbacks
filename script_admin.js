@@ -3,6 +3,20 @@ document.addEventListener("DOMContentLoaded", () => {
   mostrarFeedbacks();
 });
 
+function validarLogin() {
+  const usuario = document.getElementById("usuario").value.trim();
+  const clave = document.getElementById("clave").value.trim();
+
+  if (usuario === "admin" && clave === "hxtend25") {
+    document.getElementById("login-section").style.display = "none";
+    document.getElementById("admin-panel").style.display = "block";
+    cargarDoctores();
+    mostrarFeedbacks();
+  } else {
+    alert("Usuario o contraseña incorrectos.");
+  }
+}
+
 function registrarDoctor() {
   const nuevoDoctor = document.getElementById("nuevo-doctor").value.trim();
   if (!nuevoDoctor) return alert("Ingrese un nombre válido.");
