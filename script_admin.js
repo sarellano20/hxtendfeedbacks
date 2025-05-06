@@ -90,12 +90,14 @@ function mostrarFeedbacks() {
     return;
   }
 
-  filtrados.reverse().forEach(fb => {
+  filtrados.reverse().forEach((fb, index) => {
     const div = document.createElement("div");
     div.innerHTML = `<strong>${fb.fecha}</strong><br>
       <u>Doctor:</u> ${fb.doctor}<br>
       <u>Procedimiento:</u> ${fb.procedimiento}<br>
-      <u>Feedback:</u> ${fb.comentario}`;
+      <u>Feedback:</u> ${fb.comentario}<br>
+      <button onclick="eliminarFeedback('${fb.fecha}', '${fb.doctor}', '${fb.procedimiento.replace(/'/g, "\\'")}')">Eliminar</button>`;
+    div.classList.add("feedback-item");
     contenedor.appendChild(div);
   });
 }
