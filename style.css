@@ -1,87 +1,42 @@
-body {
-  margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: radial-gradient(circle, #0f2027, #203a43, #2c5364);
-  color: white;
-  display: flex;
-  justify-content: center;
-  padding: 30px;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HXTEND - Feedback</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="center-wrapper">
+    <div class="container">
 
-.container {
-  width: 100%;
-  max-width: 700px;
-  background-color: #1e2a38;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
-}
+      <div class="logo-container">
+        <img src="logo-HXTEND.png" alt="Logo HXTEND" class="logo" />
+      </div>
 
-.logo-container {
-  text-align: center;
-  margin-bottom: 20px;
-}
+      <h1>HXTEND - Feedback</h1>
 
-.logo {
-  width: 160px;
-  animation: pulse 3s infinite;
-  filter: drop-shadow(0 0 12px #00fff7);
-}
+      <div class="form">
+        <label for="doctor">Nombre del doctor:</label>
+        <input type="text" id="doctor" />
 
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.05); opacity: 0.85; }
-  100% { transform: scale(1); opacity: 1; }
-}
+        <label for="procedimiento">Procedimiento realizado:</label>
+        <input type="text" id="procedimiento" />
 
-h1, h2 {
-  text-align: center;
-  color: #00fff7;
-}
+        <label for="comentario">Feedback:</label>
+        <textarea id="comentario"></textarea>
 
-.form label {
-  display: block;
-  margin-top: 15px;
-}
+        <div class="buttons">
+          <button onclick="guardarFeedback()">Guardar Feedback</button>
+          <button onclick="descargarFeedbacks()">Descargar TXT</button>
+        </div>
+      </div>
 
-input, textarea {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 6px;
-  border: none;
-  font-size: 16px;
-}
+      <h2>Historial de Feedbacks</h2>
+      <div id="listaFeedbacks" class="feedbacks"></div>
+    </div>
+  </div>
 
-textarea {
-  height: 100px;
-  resize: vertical;
-}
-
-button {
-  margin-top: 15px;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #00fff7;
-  color: #000;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-button:hover {
-  background-color: #00e0db;
-}
-
-.feedbacks {
-  margin-top: 20px;
-}
-
-.feedbacks div {
-  background-color: #293847;
-  padding: 15px;
-  margin-top: 10px;
-  border-radius: 8px;
-  white-space: pre-line;
-}
+  <script src="script.js"></script>
+</body>
+</html>
