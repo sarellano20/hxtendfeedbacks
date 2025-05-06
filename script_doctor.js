@@ -34,3 +34,13 @@ function guardarFeedback() {
   document.getElementById("procedimiento").value = "";
   document.getElementById("comentario").value = "";
 }
+
+function mostrarAlerta(mensaje) {
+  const alerta = document.createElement("div");
+  alerta.className = "alerta";
+  alerta.textContent = mensaje;
+  document.body.appendChild(alerta);
+  setTimeout(() => {
+    alerta.remove();
+  }, 3000);
+}
