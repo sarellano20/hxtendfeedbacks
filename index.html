@@ -8,20 +8,20 @@
 </head>
 <body>
   <div class="container">
-    <h1>HXTEND - Feedback de usuarios</h1>
+    <h1>HXTEND - Feedback</h1>
 
     <div class="form">
-      <label for="persona">Nombre:</label>
-      <input type="text" id="persona" value="Dr. Juan Manuel Alcívar" />
+      <label for="procedimiento">Procedimiento realizado:</label>
+      <input type="text" id="procedimiento" placeholder="Ej: Rehabilitación con Hxtend" />
 
       <label for="comentario">Feedback:</label>
-      <textarea id="comentario" placeholder="Escribe tu opinión sobre Hxtend..."></textarea>
+      <textarea id="comentario" placeholder="Escribe el feedback del procedimiento..."></textarea>
 
       <button onclick="guardarFeedback()">Guardar Feedback</button>
       <button onclick="descargarFeedbacks()">Descargar como TXT</button>
     </div>
 
-    <h2>Historial de Feedbacks</h2>
+    <h2>Historial</h2>
     <div id="listaFeedbacks" class="feedbacks"></div>
   </div>
 
