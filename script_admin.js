@@ -149,3 +149,24 @@ function mostrarAlerta(mensaje) {
     alerta.remove();
   }, 3000);
 }
+
+function eliminarFeedback(fecha, doctor, procedimiento) {
+  let feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
+
+  const index = feedbacks.findIndex(fb =>
+    fb.fecha === fecha &&
+    fb.doctor === doctor &&
+    fb.procedimiento === procedimiento
+  );
+
+  if (index !== -1) {
+    if (!confirm("¿Desea eliminar este feedback?")) return;
+    feedbacks.splice(index, 1);
+    localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+    mostrarFeedbacks();
+    mostrarAlerta("🗑️ Feedback eliminado.");
+  } else {
+    alert("No se pudo encontrar este feedback.");
+  }
+}
+
