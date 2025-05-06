@@ -101,3 +101,14 @@ function descargar(filtrado) {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+function mostrarAlerta(mensaje) {
+  const alerta = document.createElement("div");
+  alerta.className = "alerta";
+  alerta.textContent = mensaje;
+  document.body.appendChild(alerta);
+  setTimeout(() => {
+    alerta.remove();
+  }, 3000);
+}
+
