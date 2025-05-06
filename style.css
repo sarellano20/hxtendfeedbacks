@@ -96,6 +96,19 @@ button:hover {
   white-space: pre-line;
   box-shadow: 0 0 10px rgba(0,255,255,0.1);
 }
+.feedbacks div button {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: #ff4f4f;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.feedbacks div button:hover {
+  background-color: #e03e3e;
+}
 
 .alerta {
   position: fixed;
