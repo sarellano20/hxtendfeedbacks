@@ -1,16 +1,21 @@
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbwXbmYpSTIThQ0W1mubqKCSsD08NblLwa-pWyudYTkEPpUpPbl7TUVXlqTT92C3nXg98g/exec";
+
+let doctorActivo = "";
+
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const doctor = params.get("doctor");
+
   if (!doctor) {
-    alert("No se encontró el nombre del doctor. Use el enlace personalizado.");
-    document.body.innerHTML = "<p style='text-align:center'>Acceso no válido.</p>";
+    document.body.innerHTML = "<p style='color:white;text-align:center;margin-top:20px;'>Acceso no válido. Parámetro 'doctor' requerido.</p>";
     return;
   }
-  localStorage.setItem("doctor_activo", doctor); // por seguridad
+
+  doctorActivo = decodeURIComponent(doctor);
+  localStorage.setItem("doctor_activo", doctorActivo);
 });
 
 function guardarFeedback() {
-  const doctor = localStorage.getItem("doctor_activo");
   const procedimiento = document.getElementById("procedimiento").value.trim();
   const comentario = document.getElementById("comentario").value.trim();
 
@@ -19,18 +24,22 @@ function guardarFeedback() {
     return;
   }
 
-  const feedback = {
-    doctor,
-    procedimiento,
-    comentario,
-    fecha: new Date().toLocaleString()
+  const data = {
+    doctor: doctorActivo,
+    procedimiento: procedimiento,
+    comentario: comentario
   };
 
-  let feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
-  feedbacks.push(feedback);
-  localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+  fetch(SHEET_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
 
-  alert("Feedback enviado correctamente.");
+  mostrarAlerta("✅ Feedback enviado exitosamente.");
   document.getElementById("procedimiento").value = "";
   document.getElementById("comentario").value = "";
 }
