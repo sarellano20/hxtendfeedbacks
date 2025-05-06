@@ -11,11 +11,14 @@
     <h1>HXTEND - Feedback</h1>
 
     <div class="form">
+      <label for="doctor">Nombre del doctor:</label>
+      <input type="text" id="doctor" />
+
       <label for="procedimiento">Procedimiento realizado:</label>
-      <input type="text" id="procedimiento" placeholder="Ej: Rehabilitación con Hxtend" />
+      <input type="text" id="procedimiento" />
 
       <label for="comentario">Feedback:</label>
-      <textarea id="comentario" placeholder="Escribe el feedback del procedimiento..."></textarea>
+      <textarea id="comentario"></textarea>
 
       <button onclick="guardarFeedback()">Guardar Feedback</button>
       <button onclick="descargarFeedbacks()">Descargar como TXT</button>
