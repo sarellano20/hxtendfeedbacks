@@ -1,16 +1,16 @@
 document.addEventListener("DOMContentLoaded", mostrarFeedbacks);
 
 function guardarFeedback() {
-  const persona = document.getElementById("persona").value.trim();
+  const procedimiento = document.getElementById("procedimiento").value.trim();
   const comentario = document.getElementById("comentario").value.trim();
 
-  if (!persona || !comentario) {
+  if (!procedimiento || !comentario) {
     alert("Por favor, completa todos los campos.");
     return;
   }
 
   const feedback = {
-    nombre: persona,
+    procedimiento: procedimiento,
     comentario: comentario,
     fecha: new Date().toLocaleString()
   };
@@ -19,6 +19,7 @@ function guardarFeedback() {
   feedbacks.push(feedback);
   localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
 
+  document.getElementById("procedimiento").value = "";
   document.getElementById("comentario").value = "";
   mostrarFeedbacks();
 }
@@ -31,7 +32,7 @@ function mostrarFeedbacks() {
 
   feedbacks.reverse().forEach(fb => {
     const div = document.createElement("div");
-    div.innerHTML = `<strong>${fb.nombre}</strong> <em>(${fb.fecha})</em><br/>${fb.comentario}`;
+    div.innerHTML = `<strong>${fb.fecha}</strong><br/><u>Procedimiento:</u> ${fb.procedimiento}<br/><u>Feedback:</u> ${fb.comentario}`;
     contenedor.appendChild(div);
   });
 }
@@ -46,7 +47,7 @@ function descargarFeedbacks() {
 
   let contenido = "FEEDBACKS HXTEND\n--------------------\n";
   feedbacks.forEach((fb, index) => {
-    contenido += `#${index + 1}\nNombre: ${fb.nombre}\nFecha: ${fb.fecha}\nComentario: ${fb.comentario}\n\n`;
+    contenido += `#${index + 1}\nFecha: ${fb.fecha}\nProcedimiento: ${fb.procedimiento}\nFeedback: ${fb.comentario}\n\n`;
   });
 
   const blob = new Blob([contenido], { type: "text/plain" });
