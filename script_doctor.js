@@ -31,12 +31,13 @@ function guardarFeedback() {
   };
 
   fetch(SHEET_FEEDBACK_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(data)
+})
   .then(() => {
     mostrarAlerta("✅ Feedback enviado exitosamente.");
     document.getElementById("procedimiento").value = "";
