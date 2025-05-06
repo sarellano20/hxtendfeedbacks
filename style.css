@@ -119,3 +119,34 @@ button:hover {
   90% { opacity: 1; bottom: 30px; }
   100% { opacity: 0; bottom: 10px; }
 }
+
+.lista-doctores {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+.lista-doctores li {
+  background-color: #2a3b4d;
+  margin-bottom: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #fff;
+}
+
+.lista-doctores button {
+  background-color: #00fff7;
+  color: #000;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.lista-doctores button:hover {
+  background-color: #00e0db;
+}
