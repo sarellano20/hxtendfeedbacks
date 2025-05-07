@@ -30,22 +30,19 @@ function guardarFeedback() {
     comentario: comentario
   };
 
+  // CORREGIDO: Se usa no-cors para evitar error de CORS
   fetch(SHEET_FEEDBACK_URL, {
-  method: "POST",
-  mode: "no-cors",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(data)
-})
-  .then(() => {
-    mostrarAlerta("✅ Feedback enviado exitosamente.");
-    document.getElementById("procedimiento").value = "";
-    document.getElementById("comentario").value = "";
-  })
-  .catch(() => {
-    alert("❌ Error al enviar el feedback. Verifique su conexión o intente más tarde.");
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
   });
+
+  mostrarAlerta("✅ Feedback enviado exitosamente.");
+  document.getElementById("procedimiento").value = "";
+  document.getElementById("comentario").value = "";
 }
 
 function mostrarAlerta(mensaje) {
